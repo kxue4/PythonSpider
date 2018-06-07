@@ -11,7 +11,11 @@ from tags_summary import merge_dicts
 class TestTagsSummary(unittest.TestCase):
 
     def test_merge_dicts(self):
-        self.assertEqual(merge_dicts({'a': 1, 'b': 2, 'c': 3}, {'a': 2, 'b': 3, 'c': 1}, {'a': 3, 'b': 1, 'c': 2}), {'a': 6, 'b': 6, 'c': 6})
+        dict_a = {'a': 1, 'b': 2, 'c': 3}
+        dict_b = {'a': 2, 'b': 3, 'c': 1}
+        dict_c = {'a': 3, 'b': 1, 'c': 2}
+        self.assertEqual(merge_dicts(dict_a, dict_b, dict_c), {'a': 6, 'b': 6, 'c': 6})
+        self.assertEqual(merge_dicts(dict_a), dict_a)
 
 
 if __name__ == '__main__':
