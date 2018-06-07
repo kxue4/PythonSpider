@@ -8,41 +8,49 @@ import requests
 import re
 import datetime
 
-pre_url = "http://hotels.ctrip.com/hotel/"
-m = 712800
-n = 1
-post_url = ".html"
-results = {}
-total_hotels = 0
-start = datetime.datetime.now()
 
-while n < 101:
-    url = pre_url + str(m + n) + post_url
-    tag_pattern = "住客印象</span>(.*)</a></div><div class='comment_box_bar_new clearfix'>"
-    r = requests.get(url)
-    html = r.text.encode(r.encoding).decode()
-    tags_raw = re.findall(tag_pattern, html)
+def ctrip_hotel_review_tags(pre_url, start_number, post_url, total_number):
+    n = 1
+    results = {}
+    total_hotels = 0
 
-    if tags_raw:
-        for raw in tags_raw:
-            tag_raw_lists = raw.split('</a> <a')
+    while n < total_number + 1:
+        url = pre_url + str(start_number + n) + post_url
+        tag_pattern = "住客印象</span>(.*)</a></div><div class='comment_box_bar_new clearfix'>"
+        r = requests.get(url)
+        html = r.text.encode(r.encoding).decode()
+        tags_raw = re.findall(tag_pattern, html)
 
-        for raw_data in tag_raw_lists:
-            starts = raw_data.rfind('>')
-            left_bracket = raw_data.rfind('(')
-            right_bracket = raw_data.rfind(')')
-            tag = str(raw_data[starts+1:left_bracket])
-            count = int(raw_data[left_bracket+1:right_bracket])
-            results[tag] = count + results.get(tag, 0)
+        if tags_raw:
 
-        total_hotels += 1
+            for raw in tags_raw:
+                tag_raw_lists = raw.split('</a> <a')
 
-    n += 1
+            for raw_data in tag_raw_lists:
+                starts = raw_data.rfind('>')
+                left_bracket = raw_data.rfind('(')
+                right_bracket = raw_data.rfind(')')
+                tag = str(raw_data[starts+1:left_bracket])
+                count = int(raw_data[left_bracket+1:right_bracket])
+                results[tag] = count + results.get(tag, 0)
 
-ends = datetime.datetime.now()
+            total_hotels += 1
 
-print(results)
-print('Total hotel numbers:', total_hotels, '\nRunning time:', ends-start)
+        n += 1
+
+    return results, total_hotels
+
+
+if __name__ == '__main__':
+    pre_url = "http://hotels.ctrip.com/hotel/"
+    start_number = 712800
+    total_number = 10
+    post_url = ".html"
+    start = datetime.datetime.now()
+    data = ctrip_hotel_review_tags(pre_url, start_number, post_url, total_number)
+    ends = datetime.datetime.now()
+    print(data[0])
+    print('Total hotel numbers:', data[1], '\nRunning time:', ends-start)
 
 # 441300: r_1 = {'房间': 9576, '位置': 6013, '服务': 11059, '环境': 5835, '早餐': 2868, '性价比': 5788, '干净': 1135, '设施': 4339, '安静': 172, '前台': 739, '老板': 160, '交通': 2202, '地铁': 440, '游泳': 494, '儿童': 290, '卫生': 183, '豪华': 216, '夜生活': 206, '大海': 45, '沙滩': 41, '停车': 122, '接送机': 46, '机场': 17}
 # 441400: r_2 = {'房间': 5738, '干净': 481, '位置': 3431, '性价比': 2981, '沙滩': 461, '环境': 3532, '设施': 2053, '服务': 6298, '大海': 244, '接送机': 3, '免费': 12, '机场': 1, '前台': 185, '夜生活': 77, 'KTV': 64, '卫生': 80, '老板': 28, '设计风格': 34, '停车': 74, '景点': 16, '火车站': 142, '早餐': 1657, '网络': 4, '交通': 1186, '安静': 248, '态度': 9, '汽车站': 4, '地铁': 370, '美女': 3, '家的感觉': 3, '古香古色': 1, '晒太阳': 1, '品茶读书': 1, '院落': 1}

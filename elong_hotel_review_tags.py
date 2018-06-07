@@ -10,36 +10,42 @@ import re
 import datetime
 
 
-pre_url = "http://hotel.elong.com/00"
-m = 101000
-n = 1
-post_url = "/#review"
-tag_pattern = "<span>(.*)</span>"
-start = datetime.datetime.now()
-total_hotel = 0
-results = {}
+def elong_hotel_review_tags(pre_url, start_number, post_url, total_number):
+    n = 1
+    tag_pattern = "<span>(.*)</span>"
+    total_hotel = 0
+    results = {}
 
-while n < 1001:
-    url = pre_url + str(m + n) + post_url
-    r = requests.get(url)
-    soup = BeautifulSoup(r.text)
-    tag_raw =soup.find_all('li', method = "filterCommentByTag")
+    while n < total_number:
+        url = pre_url + str(start_number + n) + post_url
+        r = requests.get(url)
+        soup = BeautifulSoup(r.text)
+        tag_raw =soup.find_all('li', method = "filterCommentByTag")
 
-    if tag_raw:
+        if tag_raw:
 
-        for elements in tag_raw:
-            tag = str(elements).split('\t')[-1].split('<span>')[0]
-            count = re.findall(tag_pattern, str(elements).split('\t')[-1])[0]
-            results[tag] = int(count) + results.get(tag, 0)
+            for elements in tag_raw:
+                tag = str(elements).split('\t')[-1].split('<span>')[0]
+                count = re.findall(tag_pattern, str(elements).split('\t')[-1])[0]
+                results[tag] = int(count) + results.get(tag, 0)
 
-        total_hotel += 1
+            total_hotel += 1
 
-    n += 1
+        n += 1
 
-end = datetime.datetime.now()
-print(results)
-print('Total hotel numbers:', total_hotel, '\nRunning time:', end-start)
+    return results, total_hotel
 
+
+if __name__ == '__main__':
+    pre_url = "http://hotel.elong.com/00"
+    start_number = 101000
+    total_number = 100
+    post_url = "/#review"
+    start = datetime.datetime.now()
+    data = elong_hotel_review_tags(pre_url, start_number, post_url, total_number)
+    ends = datetime.datetime.now()
+    print(data[0])
+    print('Total hotel numbers:', data[1], '\nRunning time:', ends-start)
 
 # 30101000 138家: r_1 = {'出行方便': 6593, '性价比高': 17355, '去机场方便': 32, '服务周到': 3079, '设施齐全': 6075, '位置优越': 3033, '离地铁站近': 6714, '前台热情': 1078, '服务态度好': 1472, '贴心服务': 199, '价格实惠': 1519, '餐饮不错': 1018, '环境优雅': 900, '床品舒适': 301, '老板热情': 70, '交通便利': 10223, '大堂气派': 100, '吃饭方便': 3640, '地理位置好': 2193, '离商业街近': 267, '在市中心': 503, '离展馆近': 46, '购物方便': 1323, '离火车站近': 1274, '逛街方便': 102, '离景点近': 307, '吃喝玩乐方便': 24, '离步行街近': 47, '夜景美': 29, '设施设备好': 44, '离车站近': 126, '离市区近': 96, '离码头近': 17, '风景优美': 9, '有历史感': 41, '离汽车站近': 27, '离南站近': 41, '离高铁站近': 28, '古色古香': 61, '离小吃街近': 12, '转机方便': 5, '私密性好': 120, '接送机方便': 190, '温泉不错': 776, '人文特色': 5, '适合度假': 28, '空气清新': 28}
 # 00501000 149家: r_2 = {'性价比高': 7290, '出行方便': 6880, '服务周到': 2760, '交通便利': 5483, '价格实惠': 1442, '设施齐全': 2684, '前台热情': 1719, '服务态度好': 1190, '吃饭方便': 2155, '地理位置好': 681, '购物方便': 1207, '位置优越': 637, '离火车站近': 1577, '床品舒适': 129, '离商业街近': 118, '离车站近': 161, '离高铁站近': 15, '在市中心': 153, '环境优雅': 416, '老板热情': 91, '吃喝玩乐方便': 62, '离地铁站近': 1029, '逛街方便': 46, '贴心服务': 55, '空气清新': 11, '离北站近': 55, '离市区近': 28, '餐饮不错': 76, '古色古香': 18, '离景点近': 42, '设施设备好': 3, '离汽车站近': 49, '离展馆近': 5, '去机场方便': 11, '离海边近': 182, '有私人海滩': 10, '卫浴干净': 3, '温泉不错': 5, '离高铁近': 6, '离夜市近': 7}
