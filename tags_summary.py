@@ -17,16 +17,27 @@ r_5 = {'老板热情': 275, '离小吃街近': 3, '在市中心': 23, '吃喝玩
 r_6 = {'出行方便': 38463, '离地铁站近': 18782, '离景点近': 1084, '性价比高': 34207, '交通便利': 23007, '吃饭方便': 13181, '服务周到': 14957, '设施齐全': 14221, '服务态度好': 5148, '价格实惠': 5493, '地理位置好': 5196, '位置优越': 4948, '购物方便': 4162, '在市中心': 808, '餐饮不错': 786, '环境优雅': 1131, '离南站近': 30, '离商业街近': 310, '离火车站近': 1287, '前台热情': 8662, '贴心服务': 416, '去机场方便': 146, '离市区近': 155, '老板热情': 2204, '大堂气派': 21, '设计有特色': 50, '逛街方便': 139, '接送机方便': 319, '转机方便': 90, '离城墙近': 20, '床品舒适': 464, '离车站近': 203, '离小吃街近': 159, '离高铁站近': 22, '夜景美': 6, '离展馆近': 58, '离步行街近': 88, '吃喝玩乐方便': 84, '设施设备好': 87, '离汽车站近': 124, '空气清新': 126, '私密性好': 112, '离东站近': 4, '温泉不错': 271, '适合度假': 7, '古色古香': 70, '离美食街近': 7, '卫浴干净': 39, '离海边近': 10, '离夜市近': 6, '离高铁近': 3, '有历史感': 5, '民俗特色': 3, '离古城近': 3}
 
 
-def merge_dicts(a, b):
-    a, b = Counter(a), Counter(b)
-    c = dict(a + b)
-    return c
+def merge_dicts(*args):
+    n = len(args)
+    i = 1
+    while i < n:
+
+        for key, value in args[i].items():
+
+            if key in args[0].keys():
+                args[0][key] += value
+            else:
+                args[0][key] = value
+
+        i += 1
+
+    return args[0]
 
 
-def generate_csv():
-    result = merge_dicts(merge_dicts(merge_dicts(merge_dicts(merge_dicts(r_1, r_2), r_3), r_4), r_5), r_6)
+def generate_csv(website_name):
+    result = merge_dicts(r_1, r_2, r_3, r_4, r_5, r_6)
     lists_r = sorted(result.items(), key=lambda x: x[1], reverse=True)
-    csvfile = open('elong_result.csv', 'w')
+    csvfile = open(website_name + '_result.csv', 'w')
     writer = csv.writer(csvfile)
     writer.writerow(['TAG', 'Total'])
 
@@ -37,4 +48,5 @@ def generate_csv():
 
 
 if __name__ == '__main__':
-    generate_csv()
+    website_name = input('Website name: ')
+    generate_csv(website_name)
