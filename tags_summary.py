@@ -19,19 +19,17 @@ r_6 = {'出行方便': 38463, '离地铁站近': 18782, '离景点近': 1084, '�
 
 def merge_dicts(*args):
     n = len(args)
-    i = 1
+    i = 0
+    result = {}
     while i < n:
 
         for key, value in args[i].items():
 
-            if key in args[0].keys():
-                args[0][key] += value
-            else:
-                args[0][key] = value
+            result[key] = value + result.get(key, 0)
 
         i += 1
 
-    return args[0]
+    return result
 
 
 def generate_csv(website_name):
