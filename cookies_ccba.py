@@ -10,5 +10,5 @@ import requests
 def login_by_post():
     url = 'http://ccba6.info/wp-login.php'
     session = requests.session()
-    post_data = {'log': 'kaiwen', 'pwd': '1q2w3e4r5t'}
+    post_data = {'log': 'kaiwen', 'pwd': '**********'}
     session.post(url, post_data)
