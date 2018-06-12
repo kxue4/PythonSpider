@@ -24,7 +24,7 @@ def elong_hotel_review_tags(pre_url, start_number, post_url, total_number):
         if tag_raw:
 
             for elements in tag_raw:
-                tag = str(elements).split('\t')[-1].split('<span>')[0]
+                tag = re.sub(r'[^\u4e00-\u9fa5]', '', str(elements))
                 count = elements.span.string
                 results[tag] = int(count) + results.get(tag, 0)
 

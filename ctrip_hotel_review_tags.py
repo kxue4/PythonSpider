@@ -24,7 +24,7 @@ def ctrip_hotel_review_tags(pre_url, start_number, post_url, total_number):
         if tags_raw:
 
             for elements in tags_raw:
-                tag = str(elements.string.split('(')[0])
+                tag = re.sub(r'[^\u4e00-\u9fa5]', '', str(elements))
                 count = int(re.sub('\D', '', elements.string))
                 results[tag] = count + results.get(tag, 0)
 
