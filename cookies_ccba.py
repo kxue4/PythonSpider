@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Time    : 2018/6/12 10:42
 # @Author  : Kaiwen Xue
-# @File    : coockies_ccba.py
+# @File    : cookies_ccba.py
 # @Software: PyCharm
 import requests
 
