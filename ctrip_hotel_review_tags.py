@@ -6,7 +6,7 @@
 # @Software: PyCharm
 import requests
 import re
-import datetime
+from time import time
 from bs4 import BeautifulSoup
 
 
@@ -40,13 +40,13 @@ if __name__ == '__main__':
     start_number = 712800
     total_number = 10
     post_url = ".html"
-    start = datetime.datetime.now()
-    print('--------------------Script running--------------------\n')
+    start = time()
+    print('==============================Script running==============================\n')
     data = ctrip_hotel_review_tags(pre_url, start_number, post_url, total_number)
-    ends = datetime.datetime.now()
-    print('\tRunning time:', ends - start)
-    print('\tTotal hotel numbers:', data[1])
-    print('\n------------------------Result------------------------\n')
+    ends = time()
+    print('\t\t\t\t\t\t\tRunning time:', str(round(ends - start, 2)) + 's')
+    print('\n==================================Result==================================\n')
+    print('Total hotel numbers:', data[1])
     print(data[0])
 
 

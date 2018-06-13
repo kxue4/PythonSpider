@@ -8,7 +8,7 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import csv
-import datetime
+from time import time
 
 
 def login_by_post():
@@ -49,9 +49,9 @@ def login_by_post():
 
 
 if __name__ == '__main__':
-    print('--------------------Script running--------------------\n')
-    start = datetime.datetime.now()
+    print('==============================Script running==============================\n')
+    start = time()
     login_by_post()
-    ends = datetime.datetime.now()
-    print('\tRunning time:', ends - start)
-    print('\n------------------------Finish------------------------\n')
+    ends = time()
+    print('\t\t\t\t\t\t\tRunning time:', str(round(ends - start, 2)) + 's')
+    print('\n==================================Result==================================\n')

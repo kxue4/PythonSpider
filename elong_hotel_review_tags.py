@@ -7,7 +7,7 @@
 import requests
 from bs4 import BeautifulSoup
 import re
-import datetime
+from time import time
 
 
 def elong_hotel_review_tags(pre_url, start_number, post_url, total_number):
@@ -40,13 +40,13 @@ if __name__ == '__main__':
     start_number = 101000
     total_number = 100
     post_url = "/#review"
-    start = datetime.datetime.now()
-    print('--------------------Script running--------------------\n')
+    start = time()
+    print('==============================Script running==============================\n')
     data = elong_hotel_review_tags(pre_url, start_number, post_url, total_number)
-    ends = datetime.datetime.now()
-    print('\tRunning time:', ends - start)
-    print('\tTotal hotel numbers:', data[1])
-    print('\n------------------------Result------------------------\n')
+    ends = time()
+    print('\t\t\t\t\t\t\tRunning time:', str(round(ends - start, 2)) + 's')
+    print('\n==================================Result==================================\n')
+    print('Total hotel numbers:', data[1])
     print(data[0])
 
 
