@@ -12,15 +12,18 @@ from time import time
 
 
 def login_by_post():
-    download_list = []
-    download_page = 'http://ccba6.info/wp-content/plugins/erphpdown/download.php?postid='
-    post_post_page = '&url=&key=1'
-    results = {}
-
     login_url = 'http://ccba6.info/wp-login.php'
     session = requests.session()
     post_data = {'log': 'kaiwen', 'pwd': '**********'}
     session.post(login_url, post_data)
+    return session
+
+
+def find_download_links(session):
+    download_list = []
+    download_page = 'http://ccba6.info/wp-content/plugins/erphpdown/download.php?postid='
+    post_post_page = '&url=&key=1'
+    results = {}
     vip_url = 'http://ccba6.info/category/vip'
     r = session.get(vip_url)
     soup = BeautifulSoup(r.text, 'lxml')
@@ -38,6 +41,10 @@ def login_by_post():
         dd = download_url+post_post_page
         results[dd] = a.string
 
+    return results
+
+
+def csv_generator(results):
     csvfile = open('ccba_download.csv', 'w')
     writer = csv.writer(csvfile)
     writer.writerow(['URL', 'code'])
@@ -51,7 +58,7 @@ def login_by_post():
 if __name__ == '__main__':
     print('==============================Script running==============================\n')
     start = time()
-    login_by_post()
+    csv_generator(find_download_links(login_by_post()))
     ends = time()
     print('\t\t\t\t\t\t\tRunning time:', str(round(ends - start, 2)) + 's')
     print('\n==================================Result==================================\n')
