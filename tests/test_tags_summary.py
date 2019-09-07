@@ -5,7 +5,7 @@
 # @File    : test_tags_summary.py
 # @Software: PyCharm
 import unittest
-from tags_summary import merge_dicts
+from Other_tools.tags_summary import merge_dicts
 
 
 class TestTagsSummary(unittest.TestCase):

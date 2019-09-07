@@ -18,7 +18,7 @@ def elong_hotel_review_tags(pre_url, start_number, post_url, total_number):
     while n < total_number:
         url = pre_url + str(start_number + n) + post_url
         r = requests.get(url)
-        soup = BeautifulSoup(r.text, 'lxml')
+        soup = BeautifulSoup(r.text)
         tag_raw =soup.find_all('li', method="filterCommentByTag")
 
         if tag_raw:

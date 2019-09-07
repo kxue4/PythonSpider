@@ -4,7 +4,6 @@
 # @Author  : Kaiwen Xue
 # @File    : tags_summary.py
 # @Software: PyCharm
-from collections import Counter
 import csv
 
 
